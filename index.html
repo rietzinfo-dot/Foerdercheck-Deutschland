@@ -552,7 +552,7 @@ const LW = "Landwirtschaft";
 const lwPruefen = br => br === LW ? [["warn","Landwirtschaftliche Erzeugung ist bei vielen Programmen ausgeschlossen. Das kläre ich vorab mit der Förderbank."]] : [];
 const LAENDER = {
   "Baden-Württemberg": {status:"kredit", prog:"Digitalisierungsfinanzierung der L-Bank", eck:[["5 %","Tilgungszuschuss"],["10.000 €","Mindestvorhaben"],["250.000 €","Vorhaben bis (mit Landesprämie)"]],
-    info:["Förderkredit über deine Hausbank. Nach dem Projekt gibt es 5 % Tilgungszuschuss aus der Digitalisierungsprämie des Landes (Stufe 2 und 3, Vorhaben bis 250.000 €). KI-Projekte gehören zu Stufe 3.","Den reinen Zuschuss (Digitalisierungsprämie Plus) gibt es seit 30.06.2025 nicht mehr.",KFW],
+    info:["Förderkredit über deine Hausbank. Nach dem Projekt gibt es 5 % Tilgungszuschuss aus der Digitalisierungsprämie des Landes (Stufe 2 und 3, Vorhaben bis 250.000 €). KI-Projekte gehören zu Stufe 3.","Neu seit 02.11.2026: Kleine und mittlere Unternehmen erhalten für jedes Digitalisierungsvorhaben mindestens 2 % Tilgungszuschuss, KI-Projekte bis 250.000 € weiter 5 %. Den reinen Zuschuss (Digitalisierungsprämie Plus) gibt es seit 30.06.2025 nicht mehr.",KFW],
     f:(k)=>({z:k>=10000&&k<=250000?.05*k:0,m:k<10000?[["warn","Gefördert werden Vorhaben ab 10.000 €."]]:k>250000?[["warn","Über 250.000 € entfällt die Landesprämie, die L-Bank gibt dann höchstens 1–2 % Tilgungszuschuss."]]:[]})},
   "Bayern": {status:"offen", prog:"Digitalbonus.Bayern Plus", eck:[["50 %","Zuschuss"],["4.000 €","Mindestausgaben"],["30.000 €","Höchstzuschuss (Plus)"]],
     info:["KI-Projekte laufen über den Digitalbonus Plus (bis 50 %, höchstens 30.000 €), wenn der besondere Innovationsgehalt gut beschrieben ist. Einfache Prozessdigitalisierung fällt unter den Standard mit höchstens 7.500 €.","Nur kleine Gewerbebetriebe mit weniger als 50 Mitarbeitenden. Externe Anbieter und individuelle Programmierung sind ausdrücklich förderfähig, Lizenzen höchstens für 18 Monate.","Monatliches Antragskontingent: Jede Runde startet am ersten Werktag des Monats um 10:00 Uhr und endet, sobald das Kontingent ausgeschöpft ist (nächste Runden: Dienstag, 01.12.2026, und Montag, 04.01.2027). Die Größe des Kontingents wird nicht veröffentlicht, deshalb Angebot und ELSTER-Unternehmenskonto vorher bereithalten. Der Betrieb stellt den Antrag selbst. Programm bis 31.12.2027."],
@@ -645,7 +645,7 @@ let zustand = {}; let kostenAngefasst = false; let laufendAngefasst = false;
 
 $("branche").innerHTML = Object.keys(BRANCHEN).sort((a, b) => a.localeCompare(b, "de")).map(b => `<option>${b}</option>`).join("");$("kreis").innerHTML = Object.keys(LAENDER).map(l => `<option>${l}</option>`).join("");
 $("kreis").value = "Sachsen-Anhalt";
-{ const w = (new URLSearchParams(location.search).get("land") || "").toLowerCase(); const t = w && Object.keys(LAENDER).find(l => l.toLowerCase().startsWith(w)); if (t) $("kreis").value = t; }
+{ const nz = x => x.toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z]/g,""); const w = nz(new URLSearchParams(location.search).get("land") || ""); const k = Object.keys(LAENDER); const t = w && (k.find(l => nz(l) === w) || k.find(l => nz(l).startsWith(w))); if (t) $("kreis").value = t; }
 
 function brancheLaden(){
   const vorgabe = BRANCHEN[$("branche").value];
